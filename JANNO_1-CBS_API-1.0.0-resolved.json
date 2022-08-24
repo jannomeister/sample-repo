@@ -1,0 +1,505 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CBS APIs",
+    "description": "CBS APIs",
+    "contact": {
+      "email": "janno@hyperstacksinc.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/JANNO_1/CBS_API/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "authentication apis"
+    },
+    {
+      "name": "Clients",
+      "description": "client related APIs"
+    },
+    {
+      "name": "Accounts",
+      "description": "bank accounts related APIs"
+    },
+    {
+      "name": "Others",
+      "description": "Other APIs"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "user login",
+        "description": "By passing in the appropriate options, you can pass the login authentication\n",
+        "operationId": "loginUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "login response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input payload"
+          },
+          "401": {
+            "description": "unauthorized login"
+          }
+        }
+      }
+    },
+    "/clients/{accountNumber}": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "search client by account number",
+        "description": "By passing in the appropriate options, you can get specific client by account number\n",
+        "operationId": "getClientByAccountNumber",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "bank account number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of available bank accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "404": {
+            "description": "client not found"
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "show all the available accounts of a client",
+        "description": "By passing in the appropriate options, you can get all the available\nbank accounts in the CBS\n",
+        "operationId": "getAccounts",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "id of the client",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of available bank accounts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Account"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/accounts/{accountNumber}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "get specific account by account number",
+        "description": "By passing in the appropriate options, you can get specific account number details\n",
+        "operationId": "getAccount",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "id of the client",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "bank account number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "bank account details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "404": {
+            "description": "account number not found"
+          }
+        }
+      }
+    },
+    "/accounts/{accountNumber}/transactions": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "get list of transaction history of a bank account",
+        "description": "By passing in the appropriate options, you can get the transaction history of an account\n",
+        "operationId": "getAccountTransactions",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "bank account number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array of transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/accounts/{accountNumber}/transactions/{transactionId}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "get specific transaction detail",
+        "description": "By passing in the appropriate options, you can get the specific transaction detail by its id\n",
+        "operationId": "getAccountTransaction",
+        "parameters": [
+          {
+            "name": "accountNumber",
+            "in": "path",
+            "description": "bank account number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "unique id of the transaction",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "404": {
+            "description": "transaction not found"
+          }
+        }
+      }
+    },
+    "/fund/transfer": {
+      "post": {
+        "tags": [
+          "Others"
+        ],
+        "summary": "intrabank transfer",
+        "description": "By passing in the appropriate options, you can transfer some funds to another account within same bank\n",
+        "operationId": "fundTransfer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FundTransfer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successfully transferred funds"
+          },
+          "400": {
+            "description": "bad input payload"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Login": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "email@sample.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "myverystrongpassword"
+          }
+        }
+      },
+      "LoginResponse": {
+        "required": [
+          "clientId"
+        ],
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string"
+          }
+        }
+      },
+      "Client": {
+        "required": [
+          "birthDate",
+          "clientId",
+          "email",
+          "firstname",
+          "lastname",
+          "middlename",
+          "mobileNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "example": "1"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "middlename": {
+            "type": "string",
+            "example": "Smith"
+          },
+          "email": {
+            "type": "string",
+            "example": "john_smith@gmail.com"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "example": "639262323232"
+          },
+          "birthDate": {
+            "type": "string",
+            "example": "01/01/1996"
+          }
+        },
+        "description": "please add all other client information that is not stated in the schema.\n"
+      },
+      "Account": {
+        "required": [
+          "accountNumber",
+          "availableBalance",
+          "balance",
+          "currencyType",
+          "status",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "accountNumber": {
+            "type": "string",
+            "example": "35651619"
+          },
+          "type": {
+            "type": "string",
+            "example": "Savings Account"
+          },
+          "currencyType": {
+            "type": "string",
+            "example": "PHP"
+          },
+          "balance": {
+            "type": "integer",
+            "example": 10000
+          },
+          "availableBalance": {
+            "type": "integer",
+            "example": 9950
+          },
+          "status": {
+            "type": "string",
+            "example": "active"
+          }
+        }
+      },
+      "Transaction": {
+        "required": [
+          "amount",
+          "balance",
+          "date",
+          "description",
+          "id",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-06-29T09:12:33.001Z"
+          },
+          "description": {
+            "type": "string",
+            "example": "Transfer to my friend"
+          },
+          "amount": {
+            "type": "integer",
+            "example": 300
+          },
+          "type": {
+            "type": "string",
+            "example": "credit / debit"
+          },
+          "balance": {
+            "type": "integer",
+            "example": 9550
+          }
+        }
+      },
+      "FundTransfer": {
+        "required": [
+          "accountNumberFrom",
+          "accountNumberTo",
+          "amount",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "accountNumberFrom": {
+            "type": "string",
+            "example": "35651619"
+          },
+          "accountNumberTo": {
+            "type": "string",
+            "example": "35651620"
+          },
+          "amount": {
+            "type": "integer",
+            "example": 300
+          },
+          "description": {
+            "type": "string",
+            "description": "Payment to my friend"
+          }
+        }
+      }
+    }
+  }
+}
