@@ -13,9 +13,9 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           title-regex: "^[A-Za-z]{3,4}-[0-9]{1,5}"
           on-failed-regex-fail-action: true
-          on-failed-regex-create-review: false
+          on-failed-regex-create-review: true
           on-failed-regex-request-changes: false
           on-failed-regex-comment:
-            "This is just an example. Failed regex: `%regex%`!"
+            "Invalid branch name ❌"
           on-succeeded-regex-dismiss-review-comment:
-            "This is just an example. Success!"
+            "Branch name is approved!🎉"
