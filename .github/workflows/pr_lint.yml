@@ -11,7 +11,7 @@ jobs:
       - uses: morrisoncole/pr-lint-action@v1.7.0
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          title-regex: "[a-z]{3,4}-[0-9]{1,5}"
+          title-regex: "[A-Za-z]{3,4}-[0-9]{1,5}"
           on-failed-regex-fail-action: true
           on-failed-regex-create-review: false
           on-failed-regex-request-changes: false
